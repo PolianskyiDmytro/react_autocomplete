@@ -5,7 +5,7 @@ import { Person } from './types/Person';
 import debounce from 'lodash.debounce';
 
 interface Props {
-  delay: number;
+  delay?: number;
 }
 
 export const App: React.FC<Props> = ({ delay = 300 }) => {
