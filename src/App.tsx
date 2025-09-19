@@ -18,8 +18,8 @@ export const App: React.FC<Props> = ({ delay = 300 }) => {
 
   const handleQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSelectedPerson('');
-    setQuery(e.target.value);
-    applyQuery(e.target.value);
+    setQuery(e.target.value.trimStart());
+    applyQuery(e.target.value.trimStart());
   };
 
   const handleInputClick = useCallback(
