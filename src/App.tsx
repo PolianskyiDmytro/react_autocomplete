@@ -14,7 +14,7 @@ interface Props {
 export const App: React.FC<Props> = ({ delay = 300 }) => {
   const [query, setQuery] = useState('');
   const [appliedQuery, setAppliedQuery] = useState('');
-  const [people, setPeople] = useState<Person[] | []>([]);
+  const [people, setPeople] = useState<Person[]>([]);
   const [selectedPerson, setSelectedPerson] = useState<Person | string>('');
 
   const applyQuery = useCallback(debounce(setAppliedQuery, delay), []);
