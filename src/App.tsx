@@ -3,6 +3,9 @@ import './App.scss';
 import { peopleFromServer } from './data/people';
 import { Person } from './types/Person';
 import debounce from 'lodash.debounce';
+import { Input } from './components/Input/Input';
+import { PersonList } from './components/List/PersonList';
+import { SelectedPerson } from './components/SelectedPerson/SelectedPerson';
 
 interface Props {
   delay?: number;
@@ -27,7 +30,7 @@ export const App: React.FC<Props> = ({ delay = 300 }) => {
     [],
   );
 
-  const onSelected = (person: Person) => {
+  const handlePersonSelect = (person: Person) => {
     setQuery(person.name);
     setAppliedQuery(person.name);
     setSelectedPerson(person);
@@ -45,43 +48,19 @@ export const App: React.FC<Props> = ({ delay = 300 }) => {
   return (
     <div className="container">
       <main className="section is-flex is-flex-direction-column">
-        {typeof selectedPerson === 'string' ? (
-          <h1 className="title" data-cy="title">
-            {`No selected person`}
-          </h1>
-        ) : (
-          <h1 className="title" data-cy="title">
-            {`${selectedPerson.name} (${selectedPerson.born} - ${selectedPerson.died})`}
-          </h1>
-        )}
+        <SelectedPerson selectedPerson={selectedPerson} />
         <div className="dropdown is-active">
-          <div className="dropdown-trigger">
-            <input
-              type="text"
-              data-cy="search-input"
-              placeholder="Enter a part of the name"
-              value={query}
-              onFocus={handleInputClick}
-              onChange={handleQueryChange}
-              onBlur={() => setPeople([])}
-            />
-          </div>
+          <Input
+            query={query}
+            onFocus={handleInputClick}
+            onChange={handleQueryChange}
+            setPeople={setPeople}
+          />
 
-          <div className="dropdown-menu" role="menu" data-cy="suggestions-list">
-            <div className="dropdown-content">
-              {filteredPeople.map(person => (
-                <div
-                  className="dropdown-item"
-                  key={person.name}
-                  data-cy="suggestion-item"
-                  onMouseDown={() => onSelected(person)}
-                  style={{ cursor: 'pointer' }}
-                >
-                  <p className="has-text-link">{person.name}</p>
-                </div>
-              ))}
-            </div>
-          </div>
+          <PersonList
+            filteredPeople={filteredPeople}
+            onSelected={handlePersonSelect}
+          />
         </div>
         {people.length !== 0 && filteredPeople.length === 0 && query && (
           <div
